@@ -20,7 +20,6 @@ import (
 	"github.com/DionTech/requestvalidation"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"pdfservice/pdfcreate/api"
 )
 
 
