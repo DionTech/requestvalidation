@@ -1,4 +1,4 @@
-module go-request-validation
+module requestvalidation
 
 go 1.17
 
