@@ -1,4 +1,4 @@
-module requestvalidation
+module github.com/DionTech/requestvalidation
 
 go 1.17
 
