@@ -4,6 +4,8 @@ This package is a wrapper for the github.com/go-playground/validator package.
 You can validate a request (by struct) and get a status ("success" or "error") and when error, a map[string][]string of errors as a response.
 This might be useful for a json-formatted api response.
 
+You can also define your own error messages, using the struct field tag `message:"validation message here"`.
+
 ## usage, for example at aws lambda
 
 ``` 
@@ -26,8 +28,8 @@ import (
 type Response events.APIGatewayProxyResponse
 type Request events.APIGatewayProxyRequest
 type ExampleRequest struct {
-    Name string `json:"name" validate:"required"`
-    Age int `json:"age" validate:"required,min=18"`
+    Name string `json:"name" validate:"required" message:"name is required"`
+    Age int `json:"age" validate:"required,min=18" message:"age is required and must be 18 or older"`
 }
 
 func Handler(request Request) (Response, error) {
