@@ -3,6 +3,7 @@ package requestvalidation
 import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
+	"reflect"
 )
 
 type RequestValidatorInterface interface {
@@ -42,6 +43,8 @@ func (r *RequestValidator) Validate(request interface{}) (ValidationResponse, er
 			return validationResponse, err
 		}
 
+		t := reflect.TypeOf(request)
+
 		for _, err := range err.(validator.ValidationErrors) {
 
 			_, ok := validationResponse.Errors[err.Field()]
@@ -49,20 +52,20 @@ func (r *RequestValidator) Validate(request interface{}) (ValidationResponse, er
 				validationResponse.Errors[err.Field()] = []string{}
 			}
 
-			validationResponse.Errors[err.Field()] = append(validationResponse.Errors[err.Field()], err.Tag())
-			/*
-				fmt.Println(err.Namespace())
-				fmt.Println(err.Field())
-				fmt.Println(err.StructNamespace())
-				fmt.Println(err.StructField())
-				fmt.Println(err.Tag())
-				fmt.Println(err.ActualTag())
-				fmt.Println(err.Kind())
-				fmt.Println(err.Type())
-				fmt.Println(err.Value())
-				fmt.Println(err.Param())
-				fmt.Println()
-			*/
+			field, found := t.FieldByName(err.StructField())
+
+			if found == false {
+				validationResponse.Errors[err.Field()] = append(validationResponse.Errors[err.Field()], err.Tag())
+				continue
+			}
+
+			message := field.Tag.Get("message")
+
+			if message == "" {
+				message = err.Tag()
+			}
+
+			validationResponse.Errors[err.Field()] = append(validationResponse.Errors[err.Field()], message)
 		}
 
 		return validationResponse, err

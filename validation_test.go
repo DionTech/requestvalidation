@@ -31,7 +31,7 @@ func TestRequestValidator_ValidateNoError(t *testing.T) {
 
 func TestRequestValidator_ValidateRequired(t *testing.T) {
 	type Request struct {
-		Name string `validate:"required"`
+		Name string `validate:"required" message:"Name is required"`
 	}
 
 	requestValidator := NewRequestValidator()
@@ -57,14 +57,14 @@ func TestRequestValidator_ValidateRequired(t *testing.T) {
 		t.Error("Expected one error only")
 	}
 
-	if validation.Errors["Name"][0] != "required" {
+	if validation.Errors["Name"][0] != "Name is required" {
 		t.Error("Expected error")
 	}
 }
 
 func TestRequestValidator_ValidateMultiple(t *testing.T) {
 	type Request struct {
-		Email string `validate:"required,email"`
+		Email string `validate:"required,email" message:"Email is required and must be a valid email"`
 	}
 
 	requestValidator := NewRequestValidator()
@@ -90,8 +90,7 @@ func TestRequestValidator_ValidateMultiple(t *testing.T) {
 		t.Error("Expected one error only")
 	}
 
-	if validation.Errors["Email"][0] != "email" {
+	if validation.Errors["Email"][0] != "Email is required and must be a valid email" {
 		t.Error("Expected error")
 	}
-
 }
