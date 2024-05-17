@@ -15,7 +15,7 @@ You can also define your own error messages, using the struct field tag `message
 ## usage, for example at aws lambda
 
 ``` 
-go get go get github.com/DionTech/requestvalidation
+go get github.com/DionTech/requestvalidation
 ```
 
 ```go 
